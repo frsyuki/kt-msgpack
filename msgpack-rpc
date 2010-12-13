@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'msgpack'
+require 'msgpack/rpc'
+require 'irb'
+
+if ARGV.length != 2
+	puts "usage: #{File.basename($0)} <host> <port>"
+	exit 1
+end
+
+Host = ARGV.shift
+Port = ARGV.shift
+
+def call(method, *args)
+	cli = MessagePack::RPC::Client.new(Host, Port)
+	begin
+		cli.timeout = 3
+		cli.call(method, *args)
+	ensure
+		cli.close
+	end
+end
+
+IRB.start
+

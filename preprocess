@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+IDL="msgpack-idl"
+
+function r() {
+	echo "$@"
+	"$@"
+}
+
+if [ "$1" == "clean" ];then
+	rm -f src/gen
+else
+	r $IDL src/kt.thrift -g cpp -o src/gen
+fi
+

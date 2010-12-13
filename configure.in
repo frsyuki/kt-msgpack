@@ -1,0 +1,117 @@
+AC_INIT(src/kt-msgpack.cc)
+AC_CONFIG_AUX_DIR(ac)
+AM_INIT_AUTOMAKE(kt-msgpack, 0.0.1)
+AC_CONFIG_HEADER(config.h)
+
+AC_SUBST(CFLAGS)
+CFLAGS="-O4 -Wall $CFLAGS"
+
+AC_SUBST(CXXFLAGS)
+CXXFLAGS="-O4 -Wall $CXXFLAGS"
+
+AC_PROG_CC
+AC_PROG_CXX
+
+AC_PROG_LIBTOOL
+AM_PROG_AS
+AM_PROG_CC_C_O
+
+
+AC_ARG_WITH([kc],
+	AS_HELP_STRING([--with-kc=DIR],
+				   [specify the root directory for kyotocabinet library]),
+	[kc_path="$withval"], [])
+if test "$kc_path" != ""; then
+	CXXFLAGS="$CXXFLAGS -I$kc_path/include"
+	CFLAGS="$CFLAGS -I$kc_path/include"
+	LDFLAGS="$LDFLAGS -L$kc_path/lib"
+fi
+
+
+AC_ARG_WITH([kt],
+	AS_HELP_STRING([--with-kt=DIR],
+				   [specify the root directory for kyototycoon library]),
+	[kt_path="$withval"], [])
+if test "$kt_path" != ""; then
+	CXXFLAGS="$CXXFLAGS -I$kt_path/include"
+	CFLAGS="$CFLAGS -I$kt_path/include"
+	LDFLAGS="$LDFLAGS -L$kt_path/lib"
+fi
+
+
+AC_ARG_WITH([msgpack],
+	AS_HELP_STRING([--with-msgpack=DIR],
+				   [specify the root directory for msgpack library]),
+	[msgpack_path="$withval"], [])
+if test "$msgpack_path" != ""; then
+	CXXFLAGS="$CXXFLAGS -I$msgpack_path/include"
+	CFLAGS="$CFLAGS -I$msgpack_path/include"
+	LDFLAGS="$LDFLAGS -L$msgpack_path/lib"
+fi
+
+
+AC_ARG_WITH([mpio],
+	AS_HELP_STRING([--with-mpio=DIR],
+				   [specify the root directory for mpio library]),
+	[mpio_path="$withval"], [])
+if test "$mpio_path" != ""; then
+	CXXFLAGS="$CXXFLAGS -I$mpio_path/include"
+	CFLAGS="$CFLAGS -I$mpio_path/include"
+	LDFLAGS="$LDFLAGS -L$mpio_path/lib"
+fi
+
+
+AC_ARG_WITH([msgpack-rpc],
+	AS_HELP_STRING([--with-msgpack-rpc=DIR],
+				   [specify the root directory for msgpack-rpc library]),
+	[msgpack_rpc_path="$withval"], [])
+if test "$msgpack_rpc_path" != ""; then
+	CXXFLAGS="$CXXFLAGS -I$msgpack_rpc_path/include"
+	CFLAGS="$CFLAGS -I$msgpack_rpc_path/include"
+	LDFLAGS="$LDFLAGS -L$msgpack_rpc_path/lib"
+fi
+
+
+AC_CHECK_LIB(stdc++, main)
+
+AC_CHECK_LIB(pthread,pthread_create,,
+	AC_MSG_ERROR([Can't find pthread library]))
+
+AC_CHECK_LIB(kyotocabinet,main,,
+	AC_MSG_ERROR([Can't find kyotocabinet library.
+--with-kc=DIR option may be needed.]))
+
+AC_CHECK_LIB(kyototycoon,main,,
+	AC_MSG_ERROR([Can't find kyototycoon library.
+--with-kt=DIR option may be needed.]))
+
+AC_CHECK_LIB(msgpack,main,,
+	AC_MSG_ERROR([Can't find msgpack library.
+--with-msgpack=DIR option may be needed.]))
+
+AC_CHECK_LIB(mpio,main,,
+	AC_MSG_ERROR([Can't find mpio library.
+--with-mpio=DIR option may be needed.]))
+
+AC_CHECK_LIB(msgpack-rpc,main,,
+	AC_MSG_ERROR([Can't find msgpack-rpc library.
+--with-msgpack-rpc=DIR option may be needed.]))
+
+
+AC_MSG_CHECKING([if debug option is enabled])
+AC_ARG_ENABLE(debug,
+	AS_HELP_STRING([--disable-debug],
+				   [disable assert macros and omit -g option]) )
+AC_MSG_RESULT([$enable_debug])
+if test "$enable_debug" != "no"; then
+	CXXFLAGS="$CXXFLAGS -g"
+	CFLAGS="$CFLAGS -g"
+else
+	CXXFLAGS="$CXXFLAGS -DNDEBUG"
+	CFLAGS="$CFLAGS -DNDEBUG"
+fi
+
+
+AC_OUTPUT([Makefile
+		   src/Makefile])
+
