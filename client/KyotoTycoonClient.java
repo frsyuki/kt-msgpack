@@ -2,7 +2,7 @@ import java.util.List;
 import org.msgpack.annotation.Optional;
 import org.msgpack.rpc.Future;
 
-public interface KyotoCabinetClient {
+public interface KyotoTycoonClient {
 	long count();
 	long size();
 	void set(byte[] key, byte[] value);
