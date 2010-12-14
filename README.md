@@ -26,7 +26,7 @@ Configure and install in the usual way:
 
 ## Example
 
-    $ ktserver -plsv /usr/local/lib/libktmsgpack.so -plex 'port=18801'
+    $ ktserver -plsv /usr/local/libexec/libktmsgpack.so -plex 'port=18801'
 
 
 ## License
