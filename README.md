@@ -47,3 +47,9 @@ Configure and install in the usual way:
 
 See also NOTICE file.
 
+Note that Kyoto Tycoon is licensed under GPL. On the other hand, a commercial
+license is also provided.
+
+If you link kt-msgpack with GPL-licensed software, the whole software will
+be licensed under GPL.
+
